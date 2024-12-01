@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CHO cart</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      href="https://fonts.cdnfonts.com/css/amazon-ember"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+   
+  </head>
+  <body>
+    <nav class="navbar row">
+      <div class="col-12 col-md-3">
+        <div class="navbar-brand">
+          <img width="150px" height="40px"  src="{% static '/images/cho1.png' %}" />
+        </div>
+      </div>
+
+      <div class="col-12 col-md-6 mt-2 mt-md-0">
+        <div class="input-group">
+          <input
+            type="text"
+            id="search_field"
+            class="form-control"
+            placeholder="Enter Product Name ..."
+          />
+          <div class="input-group-append">
+            <button id="search_btn" class="btn">
+              <i class="fa fa-search" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-3 mt-4 mt-md-0 text-center">
+
+        <!-- Form that holds cart-related data -->
+<form id="cart-form">
+ 
+  <div class="col-12 col-md-3 mt-4 mt-md-0 text-center">
+    <a href="{% url 'cart_view' %}" id="cart-link" class="ml-3">
+        <span class="ml-3" style="display:inline-block;">Cart</span>
+    </a>
+    <div>
+        <span class="ml-1" id="cart_count" style="display:inline-block;">{{ request.session.cart_count|default:0 }}</span>
+        <button type="reset" id="reset_cart_btn" class="btn btn-danger ml-2" style="display:inline-block;">Reset Cart</button>
+    </div>
+ 
+</form>
+
+    
+      </div>
+    </nav>
+
+    <h1 id="products_heading" style="display:flex;justify-content:center;">Latest Products</h1>
+
+   {% block content %}
+
+   {% endblock %}
+
+    <footer class="py-1 bg-dark">
+      <p class="text-center text-white mt-1 ">
+        Mr_Cho - 2023-2024, All Rights Reserved
+      </p>
+    </footer>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+      // // Handle adding items to cart via AJAX
+      $(document).on('click', '.add-to-cart-btn', function (e) {
+        e.preventDefault();
+        
+        var productId = $(this).data('product-id');
+
+        // Send AJAX request to update the cart
+        $.ajax({
+          url: '{% url "add_to_cart"  %}',  // URL to handle the cart update
+          type: 'POST',
+          data: {
+            'product_id': productId,
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+          },
+          success: function(response) {
+            // Update cart count in the header
+            $('#cart_count').text(response.cart_count);
+          },
+          error: function(xhr, status, error) {
+            console.error('Error updating cart:', error);
+          }
+        });
+      });
+
+
+
+      document.getElementById('cart-form').addEventListener('reset', function(e) {
+        e.preventDefault();  // Prevent the default reset behavior (if any)
+
+        // Send an AJAX request to reset the cart in the session
+        $.ajax({
+            url: '{% url "reset_cart" %}',  // URL to reset the cart in session
+            type: 'POST',
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function(response) {
+                // Reset the cart count in the frontend
+                $('#cart_count').text(response.cart_count);  // Update the cart count to 0
+            },
+            error: function(xhr, status, error) {
+                console.error('Error resetting cart:', error);
+            }
+        });
+
+        // Reset the form fields if needed (optional)
+        document.getElementById('cart-form').reset();  // This clears all form fields
+    });
+    </script>
+
+  </body>
+</html>

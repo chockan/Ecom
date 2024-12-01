@@ -1,0 +1,97 @@
+<!-- order_success.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style1.css' %}">
+
+<div class="container1">
+    <h2>Order Success!</h2>
+    <p>Your order has been placed successfully.Please fill your delivery Address</p>
+    <a href="{% url 'showProducts' %}" class="btn btn-primary">Go to Home</a>
+
+    <form action="{% url 'submit_form' %}" method="POST">
+        {% csrf_token %}
+        <div class="custom-form-container">
+            <h2>Address</h2>
+            
+            <!-- Input Group for Name -->
+            <div class="custom-input-group">
+                <label for="name">Your Name:</label>
+                <input type="text" placeholder="Your name" name="name" id="name" required />
+            </div>
+
+            <!-- Input Group for Phone Number -->
+            <div class="custom-input-group">
+                <label for="phonenumber">Your Phone Number:</label>
+                <input type="text" placeholder="Your phone number" name="phone_number" id="phone_number" required />
+            </div>
+    
+            <!-- Input Group for Father's Name -->
+            <div class="custom-input-group">
+                <label for="fathername">Your Father's Name:</label>
+                <input type="text" placeholder="Your father's name" name="fathername" id="fathername" required />
+            </div>
+    
+            <!-- Input Group for Door Number -->
+            <div class="custom-input-group">
+                <label for="door_number">Door Number:</label>
+                <input type="text" placeholder="Door number" name="door_number" id="door_number" required />
+            </div>
+    
+            <!-- Input Group for Street Name -->
+            <div class="custom-input-group">
+                <label for="street_name">Street Name:</label>
+                <input type="text" placeholder="Street name" name="street_name" id="street_name" required />
+            </div>
+    
+            <!-- Input Group for Town Name -->
+            <div class="custom-input-group">
+                <label for="town_name">Town Name:</label>
+                <input type="text" placeholder="Town name" name="town_name" id="town_name" required />
+            </div>
+    
+            <!-- Input Group for City Name -->
+            <div class="custom-input-group">
+                <label for="city_name">City Name:</label>
+                <input type="text" placeholder="City name" name="city_name" id="city_name" required />
+            </div>
+    
+            <!-- Input Group for District Name -->
+            <div class="custom-input-group">
+                <label for="district_name">District Name:</label>
+                <input type="text" placeholder="District name" name="district_name" id="district_name" required />
+            </div>
+    
+            <!-- Input Group for District Pincode -->
+            <div class="custom-input-group">
+                <label for="district_pincode">District Pincode:</label>
+                <input type="text" placeholder="District pincode" name="district_pincode" id="district_pincode" required />
+            </div>
+    
+            <!-- Input Group for State Name -->
+            <div class="custom-input-group">
+                <label for="state_name">State:</label>
+                <input type="text" placeholder="State" name="state_name" id="state_name" required />
+            </div>
+    
+            <!-- Input Group for Message -->
+            <div class="custom-input-group">
+                <label for="message">Your Message:</label>
+                <textarea name="message" placeholder="Your message" id="message" cols="30" rows="5" required></textarea>
+            </div>
+    
+            <!-- Submit Button -->
+            <div class="custom-submit-btn">
+                <input type="submit" value="Confirm Order" class="btn" />
+            </div>
+        </div>
+    </form>
+</div>
+
+    
+</div>
+
+{% endblock %}
